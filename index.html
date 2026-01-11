@@ -1,308 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Azeez | Senior Medical Coder</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <style>
-    /* ---------------------------
-       Base / Theme
-    --------------------------- */
-    :root{
-      --accent: #39d353;   /* green accent */
-      --card-w: 420px;
-      --card-radius: 28px 8px 28px 8px; /* unique corner pattern */
-    }
+<meta charset="utf-8" />
+<title>Azeez | Senior Medical Coder</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    html,body{height:100%;margin:0;}
-    body {
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height:100vh;
-      overflow:hidden;
-      transition: background 0.6s ease, color 0.3s;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
+<style>
+:root{
+  --accent:#39d353;
+  --card-w:420px;
+  --card-radius:28px 8px 28px 8px;
+}
 
-    /* dark / light */
-    body.dark{
-      background: radial-gradient(circle at 10% 10%, #071021 0%, #031018 25%, #000000 100%);
-      color:#e6eef3;
-    }
-    body.light{
-      background: linear-gradient(120deg,#f6fbff,#eef4ff);
-      color:#111827;
-    }
+/* ---------------- BASE ---------------- */
+html,body{margin:0;height:100%;}
+body{
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  transition:background .6s,color .3s;
+}
 
-    /* ---------------------------
-       Stars & moving backgrounds
-       layered so stars sit behind the card
-    --------------------------- */
-    .stars {
-      position:fixed;
-      inset:-10% -10%;
-      z-index:0; /* behind everything */
-      pointer-events:none;
-      background:
-        radial-gradient(1px 1px at 5% 20%, rgba(255,255,255,0.95) 0%, transparent 40%),
-        radial-gradient(1px 1px at 14% 70%, rgba(255,255,255,0.9) 0%, transparent 40%),
-        radial-gradient(1px 1px at 28% 30%, rgba(255,255,255,0.85) 0%, transparent 40%),
-        radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.9) 0%, transparent 40%),
-        radial-gradient(1px 1px at 60% 40%, rgba(255,255,255,0.85) 0%, transparent 40%),
-        radial-gradient(1px 1px at 75% 60%, rgba(255,255,255,0.9) 0%, transparent 40%),
-        radial-gradient(1px 1px at 90% 20%, rgba(255,255,255,0.85) 0%, transparent 40%);
-      background-size: 1100px 1100px;
-      opacity:0.9;
-      animation: starsShift 50s linear infinite;
-      filter: drop-shadow(0 0 1px rgba(255,255,255,0.05));
-    }
+/* themes */
+body.dark{
+  background:radial-gradient(circle at 10% 10%,#071021,#020617 60%,#000);
+  color:#e6eef3;
+}
+body.light{
+  background:linear-gradient(120deg,#f6fbff,#eef4ff);
+  color:#0f172a;
+}
 
-    /* subtle vertical motion so stars drift */
-    @keyframes starsShift {
-      from{ transform: translateY(0); }
-      to  { transform: translateY(-350px); }
-    }
+/* ---------------- STARS (3 LAYERS) ---------------- */
+.stars,.stars::before,.stars::after{
+  content:"";
+  position:fixed;
+  inset:-50%;
+  background-repeat:repeat;
+  pointer-events:none;
+  z-index:0;
+}
 
-    /* shooting star (rare, decorative) */
-    .shoot {
-      position:fixed;
-      top:10%;
-      left:-20%;
-      width: 2px;
-      height: 2px;
-      background: linear-gradient(90deg, rgba(255,255,255,1), rgba(255,255,255,0));
-      opacity:0.0;
-      transform: rotate(-18deg) translateX(0);
-      z-index:0;
-      pointer-events:none;
-      animation: shoot 8s linear infinite;
-    }
-    @keyframes shoot {
-      0%   { opacity:0; transform: translateX(-20vw) translateY(0) scaleX(1); left:-10%; top:10%; }
-      5%   { opacity:1; }
-      20%  { left:110%; top:65%; transform: translateX(0) translateY(0) scaleX(1); opacity:0.6; }
-      22%  { opacity:0; }
-      100% { opacity:0; left:-10%; }
-    }
+/* slow stars */
+.stars{
+  background-image:
+    radial-gradient(1px 1px at 20% 30%,#fff,transparent),
+    radial-gradient(1px 1px at 60% 70%,#fff,transparent),
+    radial-gradient(1px 1px at 80% 20%,#fff,transparent);
+  background-size:300px 300px;
+  animation:starSlow 120s linear infinite;
+  opacity:.6;
+}
 
-    /* ---------------------------
-       Card (unique shape + glassmorphism)
-    --------------------------- */
-    .card-wrap{ position:relative; z-index:2; display:flex; align-items:center; justify-content:center; padding:48px 20px; }
+/* medium stars */
+.stars::before{
+  background-image:
+    radial-gradient(1.5px 1.5px at 25% 50%,#fff,transparent),
+    radial-gradient(1.5px 1.5px at 75% 30%,#fff,transparent),
+    radial-gradient(1.5px 1.5px at 50% 80%,#fff,transparent);
+  background-size:200px 200px;
+  animation:starMedium 70s linear infinite;
+  opacity:.75;
+}
 
-    .card{
-      width:var(--card-w);
-      border-radius:var(--card-radius);
-      padding:34px 34px 28px 34px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      box-shadow:
-        0 18px 40px rgba(2,6,23,0.6),
-        inset 0 0 0 1px rgba(255,255,255,0.02);
-      backdrop-filter: blur(10px) saturate(110%);
-      -webkit-backdrop-filter: blur(10px) saturate(110%);
-      transition: transform 420ms cubic-bezier(.2,.9,.2,1), box-shadow 420ms;
-      position:relative;
-      overflow: visible;
-      transform-origin:center;
-    }
+/* fast stars */
+.stars::after{
+  background-image:
+    radial-gradient(2px 2px at 30% 30%,#fff,transparent),
+    radial-gradient(2px 2px at 70% 60%,#fff,transparent);
+  background-size:120px 120px;
+  animation:starFast 35s linear infinite;
+  opacity:.9;
+}
 
-    /* unique decorative accent stripe (glow) */
-    .card::after{
-      content:"";
-      position:absolute;
-      top:-20px;
-      right:-40px;
-      width:140px;
-      height:140px;
-      background: radial-gradient(circle at 30% 30%, rgba(57,211,83,0.12), transparent 40%),
-                  radial-gradient(circle at 70% 70%, rgba(57,211,83,0.05), transparent 40%);
-      transform: rotate(20deg);
-      filter: blur(10px);
-      pointer-events:none;
-      transition: opacity .4s;
-      opacity:0.9;
-      z-index:0;
-    }
+@keyframes starSlow{
+  from{transform:translate(0,0);}
+  to{transform:translate(-400px,-800px);}
+}
+@keyframes starMedium{
+  from{transform:translate(0,0);}
+  to{transform:translate(-700px,-1400px);}
+}
+@keyframes starFast{
+  from{transform:translate(0,0);}
+  to{transform:translate(-1200px,-2400px);}
+}
 
-    /* card floating idle animation */
-    @keyframes floaty {
-      0%   { transform: translateY(0) rotate(-0.2deg); }
-      50%  { transform: translateY(-8px) rotate(0.2deg); }
-      100% { transform: translateY(0) rotate(-0.2deg); }
-    }
-    .card { animation: floaty 8s ease-in-out infinite; }
+/* ---------------- SHOOTING STAR ---------------- */
+.shoot{
+  position:fixed;
+  width:120px;
+  height:2px;
+  background:linear-gradient(90deg,#fff,transparent);
+  top:20%;
+  left:-30%;
+  opacity:0;
+  transform:rotate(-25deg);
+  animation:shoot 10s linear infinite;
+  z-index:0;
+}
+@keyframes shoot{
+  0%,70%{opacity:0;}
+  72%{opacity:1;}
+  85%{left:120%;top:70%;opacity:.7;}
+  100%{opacity:0;}
+}
 
-    /* hover effect */
-    .card:hover{
-      transform: translateY(-14px) scale(1.02);
-      box-shadow:
-        0 34px 80px rgba(0,0,0,0.7),
-        inset 0 0 0 1px rgba(57,211,83,0.06);
-    }
+/* ---------------- CARD ---------------- */
+.card-wrap{z-index:2;padding:48px 20px;}
+.card{
+  width:var(--card-w);
+  padding:34px;
+  border-radius:var(--card-radius);
+  background:rgba(20,20,20,.85);
+  backdrop-filter:blur(12px);
+  box-shadow:0 25px 60px rgba(0,0,0,.6);
+  text-align:center;
+  animation:float 8s ease-in-out infinite;
+  transition:transform .4s,box-shadow .4s;
+}
+@keyframes float{
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-10px);}
+  100%{transform:translateY(0);}
+}
+.card:hover{
+  transform:translateY(-16px) scale(1.03);
+  box-shadow:0 40px 90px rgba(0,0,0,.8);
+}
 
-    /* highlight stroke on hover */
-    .card:hover::after{ opacity:1; filter: blur(12px) saturate(130%); }
+/* avatar */
+.avatar{
+  width:140px;height:140px;
+  margin:-70px auto 10px;
+  border-radius:50%;
+  overflow:hidden;
+  border:4px solid rgba(255,255,255,.08);
+}
+.avatar img{width:100%;height:100%;object-fit:cover;}
 
-    /* ---------------------------
-       Avatar + name + headings
-    --------------------------- */
-    .avatar {
-      width:140px;
-      height:140px;
-      margin: -70px auto 12px;
-      border-radius:50%;
-      overflow:hidden;
-      border:4px solid rgba(255,255,255,0.06);
-      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-      box-shadow: 0 6px 18px rgba(0,0,0,0.45);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      z-index:3;
-      position:relative;
-    }
-    .avatar img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
+.badge{
+  display:inline-block;
+  padding:6px 14px;
+  border-radius:999px;
+  background:rgba(57,211,83,.15);
+  color:#d1fae5;
+  font-size:12px;
+  margin-bottom:6px;
+}
+h1{margin:8px 0 6px;}
+h3{margin:0;color:#cbd5e1;font-weight:500;}
+h4{color:var(--accent);margin-top:20px;}
+ul{text-align:left;padding-left:22px;}
+li{margin-bottom:8px;}
 
-    h1{ font-size:28px; margin:8px 0 6px; letter-spacing:0.2px; }
-    h3{ margin:0 0 6px; color:rgba(255,255,255,0.72); font-weight:500; }
-    h4{ margin-top:18px; color:var(--accent); font-weight:600; letter-spacing:0.6px; }
+/* light overrides */
+body.light .card{background:#fff;color:#020617;}
+body.light h3{color:#334155;}
+body.light ul{color:#1e293b;}
 
-    ul{ margin:14px 0 0; padding-left:22px; text-align:left; color:rgba(255,255,255,0.9); }
-    li{ margin-bottom:8px; line-height:1.45; font-size:15px; }
+/* toggle */
+.toggle{
+  position:fixed;top:18px;right:18px;
+  padding:10px 14px;
+  border-radius:999px;
+  border:0;
+  background:var(--accent);
+  color:#022c22;
+  font-weight:600;
+  cursor:pointer;
+  z-index:5;
+}
 
-    /* badge */
-    .badge{
-      display:inline-block;
-      padding:6px 12px;
-      border-radius:999px;
-      font-size:12px;
-      color: rgba(255,255,255,0.95);
-      background: linear-gradient(90deg, rgba(57,211,83,0.12), rgba(57,211,83,0.05));
-      margin-top:6px;
-    }
-
-    /* ---------------------------
-       Toggle button (top-right)
-    --------------------------- */
-    .toggle{
-      position:fixed;
-      right:18px;
-      top:18px;
-      z-index:6;
-      border:0;
-      background:linear-gradient(180deg,var(--accent),#28a63d);
-      color:#072014;
-      padding:10px 12px;
-      font-weight:600;
-      border-radius:999px;
-      cursor:pointer;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.35);
-    }
-    .toggle:active{ transform: translateY(1px); }
-
-    /* ---------------------------
-       Light theme overrides
-    --------------------------- */
-    body.light .card{
-      background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.9));
-      color:#111827;
-      box-shadow: 0 12px 30px rgba(8,12,20,0.06);
-    }
-    body.light .avatar{ border:4px solid rgba(0,0,0,0.06); background: #fff; }
-    body.light .card::after{ background: radial-gradient(circle at 30% 30%, rgba(57,211,83,0.08), transparent 40%); opacity:0.8; }
-
-    /* ---------------------------
-       Responsive polish
-    --------------------------- */
-    @media (max-width:560px){
-      :root{ --card-w: 92vw; }
-      .avatar{ width:110px; height:110px; margin-top:-55px; }
-      h1{ font-size:22px; }
-      ul{ padding-left:20px; font-size:14px; }
-    }
-  </style>
+/* responsive */
+@media(max-width:560px){
+  :root{--card-w:92vw;}
+  .avatar{width:110px;height:110px;margin-top:-55px;}
+}
+</style>
 </head>
+
 <body class="dark">
 
-  <!-- moving stars layer -->
-  <div class="stars" aria-hidden="true"></div>
-  <!-- occasional shooting streak -->
-  <div class="shoot" aria-hidden="true"></div>
+<div class="stars"></div>
+<div class="shoot"></div>
 
-  <!-- theme toggle -->
-  <button class="toggle" id="themeBtn" aria-pressed="false">🌙 Dark</button>
+<button class="toggle" id="themeBtn">🌙 Dark</button>
 
-  <!-- card -->
-  <div class="card-wrap">
-    <section class="card" role="region" aria-label="Profile card for Azeez">
-      <div class="avatar" aria-hidden="false">
-        <!-- keep image name the same if uploaded to repo; fallback shows initials if img fails -->
-        <img src="azeez.jpg" alt="Azeez profile photo" onerror="this.style.display='none'; this.parentElement.classList.add('initials');">
-      </div>
+<div class="card-wrap">
+  <div class="card">
+    <div class="avatar">
+      <img src="azeez.jpg" alt="Azeez profile">
+    </div>
+    <div class="badge">Senior Medical Profile</div>
+    <h1>Azeez</h1>
+    <h3>Senior Medical Coder / Senior Analyst</h3>
 
-      <div style="text-align:center; margin-top:6px; z-index:3; position:relative;">
-        <div class="badge">Senior Medical Profile</div>
-        <h1>Azeez</h1>
-        <h3>Senior Medical Coder / Senior Analyst</h3>
-
-        <h4>Certifications</h4>
-        <ul>
-          <li>Certified Professional Coder (CPC)</li>
-          <li>ICD-10-CM & CPT</li>
-          <li>Medical Auditing</li>
-          <li>Healthcare Compliance</li>
-        </ul>
-      </div>
-    </section>
+    <h4>Certifications</h4>
+    <ul>
+      <li>Certified Professional Coder (CPC)</li>
+      <li>ICD-10-CM & CPT</li>
+      <li>Medical Auditing</li>
+      <li>Healthcare Compliance</li>
+    </ul>
   </div>
+</div>
 
-  <script>
-    // theme toggle logic (small and robust)
-    const btn = document.getElementById('themeBtn');
-    function setTheme(dark){
-      if(dark){
-        document.body.classList.remove('light'); document.body.classList.add('dark');
-        btn.textContent = '🌙 Dark'; btn.setAttribute('aria-pressed','true');
-      } else {
-        document.body.classList.remove('dark'); document.body.classList.add('light');
-        btn.textContent = '☀️ Light'; btn.setAttribute('aria-pressed','false');
-      }
-    }
-    // initial state (dark)
-    setTheme(true);
-    btn.addEventListener('click', ()=> setTheme(document.body.classList.contains('light')) );
-
-    // micro improvement: randomize shooting star start time slightly
-    // (keeps it decorative and rare)
-    (function randomizeShootingStar(){
-      const shoot = document.querySelector('.shoot');
-      // set multiple random delays by re-triggering animation using inline style loop
-      function schedule(){
-        const delay = 5000 + Math.random()*15000; // between 5s and 20s
-        setTimeout(()=>{
-          shoot.style.opacity = '1';
-          shoot.style.left = '-20%';
-          shoot.style.top = (5 + Math.random()*50) + '%';
-          // restart the keyframe by forcing reflow
-          shoot.style.animation = 'none';
-          void shoot.offsetWidth;
-          shoot.style.animation = '';
-          // hide after a short while
-          setTimeout(()=>{ shoot.style.opacity='0'; }, 2400);
-          schedule();
-        }, delay);
-      }
-      schedule();
-    })();
-  </script>
+<script>
+const btn=document.getElementById("themeBtn");
+btn.onclick=()=>{
+  document.body.classList.toggle("dark");
+  document.body.classList.toggle("light");
+  btn.textContent=document.body.classList.contains("dark")?"🌙 Dark":"☀️ Light";
+};
+</script>
 
 </body>
 </html>
